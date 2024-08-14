@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:tictactoe/core/models/tictactoe_model.dart';
+import 'package:tictactoe/core/models/game_model.dart';
 
 abstract class GameListState extends Equatable {
   @override
@@ -11,7 +11,7 @@ class GameListInitial extends GameListState {}
 class GameListLoading extends GameListState {}
 
 class GameListLoaded extends GameListState {
-  final List<TicTacToeModel> games;
+  final List<GameModel> games;
 
   GameListLoaded(this.games);
 

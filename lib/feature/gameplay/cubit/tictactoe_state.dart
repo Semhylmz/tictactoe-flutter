@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:tictactoe/core/models/tictactoe_model.dart';
+import 'package:tictactoe/core/models/game_model.dart';
 
 abstract class TicTacToeState extends Equatable {
   @override
@@ -9,7 +9,7 @@ abstract class TicTacToeState extends Equatable {
 class TicTacToeInitial extends TicTacToeState {}
 
 class TicTacToeInProgress extends TicTacToeState {
-  final TicTacToeModel game;
+  final GameModel game;
 
   TicTacToeInProgress(this.game);
 

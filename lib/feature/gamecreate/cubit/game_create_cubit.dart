@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:tictactoe/core/models/tictactoe_model.dart';
+import 'package:flutter/material.dart';
+import 'package:tictactoe/core/models/game_model.dart';
 import 'package:tictactoe/feature/gamecreate/cubit/game_create_state.dart';
 
 class GameCreateCubit extends Cubit<GameCreateState> {
@@ -8,16 +9,19 @@ class GameCreateCubit extends Cubit<GameCreateState> {
 
   GameCreateCubit() : super(GameCreateInitial());
 
-  Future<void> createGame(String player1Id, String player2Id) async {
+  Future<void> createGame(
+      String player1Id, String gameName, String gameColor) async {
     try {
       final gameId = _firestore.collection('games').doc().id;
 
-      final gameModel = TicTacToeModel(
+      final gameModel = GameModel(
+        gameName: gameName,
+        gameColor: gameColor,
         gameId: gameId,
         board: List<String>.filled(9, ''),
         currentPlayer: player1Id,
         player1Id: player1Id,
-        player2Id: player2Id,
+        player2Id: 'player2Id',
         player1Symbol: 'X',
         player2Symbol: 'O',
         isGameOver: false,
@@ -27,8 +31,7 @@ class GameCreateCubit extends Cubit<GameCreateState> {
 
       emit(GameCreateSuccess(gameId));
     } catch (e) {
-      emit(GameCreateError(
-          'Oyun oluşturulurken bir hata oluştu: ${e.toString()}'));
+      emit(GameCreateError('Something went wrong: ${e.toString()}'));
     }
   }
 }

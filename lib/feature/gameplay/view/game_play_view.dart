@@ -11,9 +11,7 @@ class GamePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Tic-Tac-Toe - $gameId'),
-      ),
+      appBar: AppBar(title: Text('Game ID: $gameId')),
       body: BlocProvider(
         create: (context) => TicTacToeCubit(gameId),
         child: const GameBoard(),
@@ -24,6 +22,13 @@ class GamePage extends StatelessWidget {
 
 class GameBoard extends StatelessWidget {
   const GameBoard({super.key});
+
+  Color hexToColor(String hexString) {
+    final buffer = StringBuffer();
+    if (hexString.length == 6 || hexString.length == 7) buffer.write('ff');
+    buffer.write(hexString.replaceFirst('#', ''));
+    return Color(int.parse(buffer.toString(), radix: 16));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,8 +54,8 @@ class GameBoard extends StatelessWidget {
                       child: Container(
                         margin: const EdgeInsets.all(4),
                         decoration: BoxDecoration(
-                          color: Colors.blueAccent,
-                          border: Border.all(color: Colors.white, width: 2),
+                          color: hexToColor(state.game.gameColor),
+                          border: Border.all(color: Colors.white, width: 0.5),
                         ),
                         child: Center(
                           child: Text(
@@ -68,9 +73,7 @@ class GameBoard extends StatelessWidget {
               ),
               if (game.isGameOver) ...[
                 Text(
-                  game.winnerId != null
-                      ? 'Kazanan: ${game.winnerId}'
-                      : 'Beraberlik!',
+                  game.winnerId != null ? 'Winner: ${game.winnerId}' : 'Draw!',
                   style: const TextStyle(fontSize: 24),
                 ),
               ],
@@ -84,7 +87,7 @@ class GameBoard extends StatelessWidget {
             ),
           );
         } else {
-          return const Center(child: Text('Yükleniyor...'));
+          return const Center(child: Text('Loading...'));
         }
       },
     );

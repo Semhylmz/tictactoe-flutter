@@ -20,7 +20,7 @@ class UserCubit extends Cubit<UserState> {
         emit(UserAnonymous());
       }
     } catch (e) {
-      emit(UserError('Kullanıcı durumu kontrol edilirken hata oluştu: $e'));
+      emit(UserError('Error checking user status: $e'));
     }
   }
 
@@ -43,7 +43,7 @@ class UserCubit extends Cubit<UserState> {
         emit(UserAuthenticated(user));
       }
     } catch (e) {
-      emit(UserError('Anonim giriş sırasında hata oluştu: $e'));
+      emit(UserError('Error during anonymous login: $e'));
     }
   }
 }

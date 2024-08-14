@@ -1,20 +1,20 @@
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:tictactoe/core/models/tictactoe_model.dart';
+import 'package:tictactoe/core/models/game_model.dart';
 import 'package:tictactoe/feature/gameplay/cubit/tictactoe_state.dart';
 
 class TicTacToeCubit extends Cubit<TicTacToeState> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   late final Stream<DocumentSnapshot> _gameStream;
   final String gameId;
-  late TicTacToeModel _gameModel;
+  late GameModel _gameModel;
 
   TicTacToeCubit(this.gameId) : super(TicTacToeInitial()) {
     _gameStream = _firestore.collection('games').doc(gameId).snapshots();
     _gameStream.listen((snapshot) {
       if (snapshot.exists) {
         _gameModel =
-            TicTacToeModel.fromJson(snapshot.data() as Map<String, dynamic>);
+            GameModel.fromJson(snapshot.data() as Map<String, dynamic>);
         emit(TicTacToeInProgress(_gameModel));
       }
     });
@@ -26,12 +26,15 @@ class TicTacToeCubit extends Cubit<TicTacToeState> {
 
     final newBoard = List<String>.from(_gameModel.board);
     if (newBoard[index] == '') {
-      newBoard[index] = _gameModel.currentPlayer;
+      newBoard[index] =
+          _gameModel.currentPlayer == _gameModel.player1Id ? 'x' : 'o';
 
       final winner = _checkWinner(newBoard);
       final isGameOver = winner != null || !newBoard.contains('');
 
-      final updatedGame = TicTacToeModel(
+      final updatedGame = GameModel(
+        gameName: _gameModel.gameName,
+        gameColor: _gameModel.gameColor,
         gameId: _gameModel.gameId,
         board: newBoard,
         currentPlayer: _gameModel.currentPlayer == _gameModel.player1Id

@@ -1,7 +1,9 @@
-class TicTacToeModel {
+class GameModel {
   final String gameId;
-  final List<String> board; // 9 hücreli oyun tahtası
-  final String currentPlayer; // Kim oynuyor
+  final String gameName;
+  final String gameColor;
+  final List<String> board;
+  final String currentPlayer;
   final String player1Id;
   final String player2Id;
   final String player1Symbol; // 'X'
@@ -9,7 +11,9 @@ class TicTacToeModel {
   final bool isGameOver;
   final String? winnerId;
 
-  const TicTacToeModel({
+  const GameModel({
+    required this.gameName,
+    required this.gameColor,
     required this.gameId,
     required this.board,
     required this.currentPlayer,
@@ -21,8 +25,10 @@ class TicTacToeModel {
     this.winnerId,
   });
 
-  factory TicTacToeModel.fromJson(Map<String, dynamic> json) {
-    return TicTacToeModel(
+  factory GameModel.fromJson(Map<String, dynamic> json) {
+    return GameModel(
+      gameName: json['gameName'],
+      gameColor: json['gameColor'],
       gameId: json['gameId'],
       board: List<String>.from(json['board']),
       currentPlayer: json['currentPlayer'],
@@ -37,7 +43,9 @@ class TicTacToeModel {
 
   Map<String, dynamic> toJson() {
     return {
+      'gameName': gameName,
       'gameId': gameId,
+      'gameColor': gameColor,
       'board': board,
       'currentPlayer': currentPlayer,
       'player1Id': player1Id,

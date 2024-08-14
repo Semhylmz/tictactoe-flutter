@@ -1,7 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tictactoe/feature/gamecreate/view/game_create_view.dart';
 import 'package:tictactoe/feature/gamelist/view/game_list_view.dart';
+import 'package:tictactoe/feature/gameplay/view/game_play_view.dart';
 import 'package:tictactoe/feature/user/cubit/user_cubit.dart';
 import 'package:tictactoe/feature/user/cubit/user_state.dart';
 import 'package:tictactoe/feature/user/view/register/register_view.dart';
@@ -19,7 +21,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      builder: (context, child) => BlocProvider(
+      home: BlocProvider(
         create: (context) => UserCubit()..checkUserStatus(),
         child: Scaffold(
           body: BlocBuilder<UserCubit, UserState>(
@@ -38,6 +40,11 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
+      routes: {
+        //'/gameBoard': (context) => const GameBoard(),
+        '/gameList': (context) => const GameListPage(),
+        //'/gameCreate': (context) => const GameCreatePage(),
+      },
     );
   }
 }
