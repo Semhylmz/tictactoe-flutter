@@ -15,8 +15,6 @@ class UserCubit extends Cubit<UserState> {
       final user = _auth.currentUser;
 
       if (user != null && user.isAnonymous) {
-        emit(UserAnonymous());
-      } else if (user != null) {
         emit(UserAuthenticated(user));
       } else {
         emit(UserAnonymous());
